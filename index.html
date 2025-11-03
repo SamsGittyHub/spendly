@@ -49,9 +49,9 @@
   <body class="font-sans bg-spendly-light text-spendly-dark antialiased">
     <!-- 
       Page Container: We'll have 3 main page divs:
-      1. #authPage (Login/Signup) - Default visible
+      1. #authPage (Login/Signup) - Hidden
       2. #appPage (The actual app tools) - Hidden
-      3. #landingPage (The original info site) - Hidden
+      3. #landingPage (The original info site) - Default visible
     -->
 
     <!-- ######################## -->
@@ -59,7 +59,7 @@
     <!-- ######################## -->
     <div
       id="authPage"
-      class="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4"
+      class="hidden min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4"
     >
       <div class="max-w-md w-full">
         <!-- Logo -->
@@ -229,7 +229,7 @@
               Dashboard
             </h1>
             <p id="appHeaderSubtitle" class="text-sm text-spendly-gray">
-              Welcome back, Pookie!
+              Welcome back, User!
             </p>
           </div>
           <button
@@ -336,15 +336,21 @@
 
             <!-- Statistics (Preview) -->
             <div>
-              <h3 class="text-lg font-semibold text-spendly-dark mb-3">
+              <h3
+                src="/arrow.png"
+                class="text-lg font-semibold text-spendly-dark mb-3"
+              >
                 Statistic
               </h3>
-              <div class="bg-white p-4 rounded-xl shadow-sm">
+
+              <div src="/arrow.png" class="bg-white p-4 rounded-xl shadow-sm">
                 <!-- Placeholder for chart -->
+
                 <div
+                  src="/arrow.png"
                   class="h-32 flex items-center justify-center text-gray-400"
                 >
-                  [Image of Statistics Bar Chart]
+                  <source />
                 </div>
               </div>
             </div>
@@ -1075,17 +1081,66 @@
           <div class="md:w-1/2 lg:w-2/5 flex justify-center">
             <!-- Using placehold.co to mimic the app screenshot from the PDF -->
             <img
-              src="https://placehold.co/350x700/E0F2FE/3B82F6?text=Spendly+App+UI"
+              src="./Screenshot 2025-11-03 171339.png"
               alt="Spendly App Dashboard Mockup"
-              class="rounded-3xl shadow-2xl"
+              class="rounded-xl shadow-2xl"
               style="transform: rotate(3deg)"
               onerror="this.src='https://placehold.co/350x700/E0F2FE/3B82F6?text=App+Preview'"
             />
           </div>
         </section>
 
+        <!-- Video Showcase Section -->
+        <section id="video" class="bg-white py-20 md:py-28">
+          <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+              <h2 class="text-3xl md:text-4xl font-bold text-spendly-dark mb-4">
+                See Spendly in Action
+              </h2>
+              <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+                Watch our short demo to see how easy it is to take control of
+                your finances.
+              </p>
+            </div>
+
+            <!-- Video Container -->
+            <div class="max-w-6xl mx-auto">
+              <div
+                style="
+                  position: relative;
+                  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+                  height: 0;
+                "
+                class="bg-gray-200 rounded-2xl shadow-xl overflow-hidden"
+              >
+                <!-- 
+                              Video player added as requested.
+                              Added controls, autoplay, muted (required for autoplay), and loop.
+                            -->
+                <video
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                  "
+                  src="/spendly-add.mp4"
+                  controls
+                  autoplay
+                  muted
+                  loop
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Features Section -->
-        <section id="features" class="bg-white py-20 md:py-28">
+        <section id="features" class="bg-spendly-light py-20 md:py-28">
           <div class="container mx-auto px-6">
             <!-- Section Header -->
             <div class="text-center mb-16">
@@ -1215,7 +1270,7 @@
             </div>
 
             <!-- Founders Grid -->
-            <div class="grid md:grid-cols-3 gap-10 max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
               <!-- Founder 1: Silva Hassan -->
               <div class="bg-white p-8 rounded-xl shadow-md text-center">
                 <img
@@ -1227,9 +1282,7 @@
                 <h3 class="text-xl font-semibold text-spendly-dark mb-1">
                   Silva Hassan
                 </h3>
-                <p class="text-spendly-blue font-medium">
-                  Chief Executive Officer (CEO)
-                </p>
+                <p class="text-spendly-blue font-medium">Co-Founder</p>
               </div>
 
               <!-- Founder 2: Zarah Gilmore -->
@@ -1243,25 +1296,7 @@
                 <h3 class="text-xl font-semibold text-spendly-dark mb-1">
                   Zarah Gilmore
                 </h3>
-                <p class="text-spendly-blue font-medium">
-                  Chief Technology Officer (CTO)
-                </p>
-              </div>
-
-              <!-- Founder 3: Barin Zakaria -->
-              <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                <img
-                  src="https://placehold.co/100x100/E0F2FE/3B82F6?text=BZ"
-                  alt="Barin Zakaria"
-                  class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-200"
-                  onerror="this.src='https://placehold.co/100x100/E0F2FE/3B82F6?text=BZ'"
-                />
-                <h3 class="text-xl font-semibold text-spendly-dark mb-1">
-                  Barin Zakaria
-                </h3>
-                <p class="text-spendly-blue font-medium">
-                  Chief Marketing Officer (CMO)
-                </p>
+                <p class="text-spendly-blue font-medium">Co-Founder</p>
               </div>
             </div>
           </div>
@@ -1522,11 +1557,11 @@
       }
 
       // --- Initial Page Load ---
-      // We start by showing the 'authPage' by default.
+      // We start by showing the 'landingPage' by default.
       document.addEventListener('DOMContentLoaded', () => {
-        // We start by showing the 'authPage' by default.
-        authPage.classList.remove('hidden');
-        landingPage.classList.add('hidden');
+        // We start by showing the 'landingPage' by default.
+        landingPage.classList.remove('hidden');
+        authPage.classList.add('hidden');
         appPage.classList.add('hidden');
 
         // Set the home view as the active one inside the app
