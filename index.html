@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spendly - Friendly Spending, Make it Spendly</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              'spendly-green': '#10B981', // A nice green from Tailwind's palette
+              'spendly-blue': '#3B82F6',
+              'spendly-dark': '#1F2937',
+              'spendly-light': '#F9FAFB',
+              'spendly-gray': '#6B7280',
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Simple smooth scroll */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Hide scrollbar for app-like view */
+      .app-container::-webkit-scrollbar {
+        display: none;
+      }
+      .app-container {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      /* Ensure app views take up full space */
+      .app-view {
+        display: none; /* Hidden by default */
+      }
+      .app-view.active {
+        display: block; /* Shown by JS */
+      }
+    </style>
+  </head>
+  <body class="font-sans bg-spendly-light text-spendly-dark antialiased">
+    <!-- 
+      Page Container: We'll have 3 main page divs:
+      1. #authPage (Login/Signup) - Default visible
+      2. #appPage (The actual app tools) - Hidden
+      3. #landingPage (The original info site) - Hidden
+    -->
+
+    <!-- ######################## -->
+    <!--     Auth Page (Default)  -->
+    <!-- ######################## -->
+    <div
+      id="authPage"
+      class="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4"
+    >
+      <div class="max-w-md w-full">
+        <!-- Logo -->
+        <div class="flex justify-center items-center space-x-2 mb-8">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="36"
+            height="36"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="text-spendly-green"
+          >
+            <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+            <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+            <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+          </svg>
+          <span class="text-3xl font-bold text-spendly-dark">Spendly</span>
+        </div>
+
+        <!-- Login Form (Default Visible) -->
+        <div id="loginForm" class="bg-white p-8 rounded-2xl shadow-xl">
+          <h2 class="text-2xl font-bold text-center text-spendly-dark mb-6">
+            Welcome Back!
+          </h2>
+          <form>
+            <div class="mb-4">
+              <label
+                for="login-email"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="login-email"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                placeholder="you@example.com"
+              />
+            </div>
+            <div class="mb-6">
+              <label
+                for="login-password"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Password</label
+              >
+              <input
+                type="password"
+                id="login-password"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                placeholder="••••••••"
+              />
+            </div>
+            <button
+              onclick="login(event)"
+              class="w-full bg-spendly-green text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-spendly-green/90 transition duration-300"
+            >
+              Log In
+            </button>
+          </form>
+          <p class="text-center text-gray-600 text-sm mt-6">
+            Don't have an account?
+            <a
+              href="javascript:void(0)"
+              onclick="showAuthForm('signup')"
+              class="font-medium text-spendly-blue hover:underline"
+              >Sign Up</a
+            >
+          </p>
+        </div>
+
+        <!-- Signup Form (Hidden) -->
+        <div id="signupForm" class="hidden bg-white p-8 rounded-2xl shadow-xl">
+          <h2 class="text-2xl font-bold text-center text-spendly-dark mb-6">
+            Create Your Account
+          </h2>
+          <form>
+            <div class="mb-4">
+              <label
+                for="signup-name"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Full Name</label
+              >
+              <input
+                type="text"
+                id="signup-name"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                placeholder="Zarah Gilmore"
+              />
+            </div>
+            <div class="mb-4">
+              <label
+                for="signup-email"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="signup-email"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                placeholder="you@example.com"
+              />
+            </div>
+            <div class="mb-6">
+              <label
+                for="signup-password"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Password</label
+              >
+              <input
+                type="password"
+                id="signup-password"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                placeholder="••••••••"
+              />
+            </div>
+            <button
+              onclick="login(event)"
+              class="w-full bg-spendly-green text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-spendly-green/90 transition duration-300"
+            >
+              Create Account
+            </button>
+          </form>
+          <p class="text-center text-gray-600 text-sm mt-6">
+            Already have an account?
+            <a
+              href="javascript:void(0)"
+              onclick="showAuthForm('login')"
+              class="font-medium text-spendly-blue hover:underline"
+              >Log In</a
+            >
+          </p>
+        </div>
+
+        <p class="text-center text-gray-500 text-xs mt-8">
+          Want to learn more?
+          <a
+            href="javascript:void(0)"
+            onclick="showPage('landingPage')"
+            class="font-medium text-spendly-blue hover:underline"
+            >Visit our website</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <!-- ######################## -->
+    <!--      Main App Page       -->
+    <!-- ######################## -->
+    <div id="appPage" class="hidden">
+      <!-- Constrain to mobile width and center it -->
+      <div
+        class="app-container max-w-lg mx-auto min-h-screen bg-white shadow-2xl flex flex-col overflow-hidden"
+      >
+        <!-- App Header -->
+        <header
+          id="appHeader"
+          class="bg-white/90 backdrop-blur-md sticky top-0 z-10 px-6 py-5 flex justify-between items-center border-b border-gray-200"
+        >
+          <div>
+            <h1
+              id="appHeaderTitle"
+              class="text-2xl font-bold text-spendly-dark"
+            >
+              Dashboard
+            </h1>
+            <p id="appHeaderSubtitle" class="text-sm text-spendly-gray">
+              Welcome back, Pookie!
+            </p>
+          </div>
+          <button
+            id="appHeaderButton"
+            onclick="showPage('authPage')"
+            class="text-spendly-gray hover:text-spendly-dark"
+          >
+            <!-- Logout Icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </button>
+        </header>
+
+        <!-- App Main Content (Scrollable) -->
+        <main
+          id="appMainContent"
+          class="flex-1 overflow-y-auto bg-spendly-light"
+        >
+          <!-- Home View (Dashboard) -->
+          <div id="view-home" class="app-view active p-6 space-y-6">
+            <!-- Balance Card -->
+            <div
+              class="bg-gradient-to-br from-spendly-blue to-blue-600 text-white p-6 rounded-2xl shadow-lg"
+            >
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-lg font-medium opacity-80"
+                  >Total Balance</span
+                >
+                <!-- Options Icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="opacity-80"
+                >
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </div>
+              <h2 class="text-4xl font-bold mb-6">$780.20</h2>
+              <div class="flex justify-between text-sm">
+                <div class="flex items-center space-x-2">
+                  <!-- Arrow Down -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-red-300"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                  </svg>
+                  <span class="opacity-80">Expenses</span>
+                  <span class="font-semibold">$428.00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <!-- Arrow Up -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-green-300"
+                  >
+                    <line x1="12" y1="19" x2="12" y2="5"></line>
+                    <polyline points="5 12 12 5 19 12"></polyline>
+                  </svg>
+                  <span class="opacity-80">Income</span>
+                  <span class="font-semibold">$1208.20</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Statistics (Preview) -->
+            <div>
+              <h3 class="text-lg font-semibold text-spendly-dark mb-3">
+                Statistic
+              </h3>
+              <div class="bg-white p-4 rounded-xl shadow-sm">
+                <!-- Placeholder for chart -->
+                <div
+                  class="h-32 flex items-center justify-center text-gray-400"
+                >
+                  [Image of Statistics Bar Chart]
+                </div>
+              </div>
+            </div>
+
+            <!-- Services -->
+            <div>
+              <h3 class="text-lg font-semibold text-spendly-dark mb-3">
+                Service
+              </h3>
+              <div class="grid grid-cols-4 gap-4">
+                <a
+                  href="javascript:void(0)"
+                  onclick="showAppView('view-transfer', null, 'Transfer')"
+                  class="flex flex-col items-center bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                >
+                  <div
+                    class="w-12 h-12 bg-blue-100 text-spendly-blue rounded-full flex items-center justify-center"
+                  >
+                    <!-- Transfer Icon -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <line x1="12" y1="19" x2="12" y2="5"></line>
+                      <polyline points="5 12 12 5 19 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs font-medium text-gray-700 mt-2"
+                    >Transfer</span
+                  >
+                </a>
+                <a
+                  href="javascript:void(0)"
+                  onclick="showAppView('view-payment', null, 'Payment')"
+                  class="flex flex-col items-center bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                >
+                  <div
+                    class="w-12 h-12 bg-green-100 text-spendly-green rounded-full flex items-center justify-center"
+                  >
+                    <!-- Payment Icon -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect
+                        x="1"
+                        y="4"
+                        width="22"
+                        height="16"
+                        rx="2"
+                        ry="2"
+                      ></rect>
+                      <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>
+                  </div>
+                  <span class="text-xs font-medium text-gray-700 mt-2"
+                    >Payment</span
+                  >
+                </a>
+                <a
+                  href="javascript:void(0)"
+                  onclick="showAppView('view-savings', null, 'Savings')"
+                  class="flex flex-col items-center bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                >
+                  <div
+                    class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center"
+                  >
+                    <!-- Savings Icon -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
+                      ></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+                  <span class="text-xs font-medium text-gray-700 mt-2"
+                    >Savings</span
+                  >
+                </a>
+                <a
+                  href="javascript:void(0)"
+                  onclick="showAppView('view-more', null, 'More Services')"
+                  class="flex flex-col items-center bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                >
+                  <div
+                    class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center"
+                  >
+                    <!-- More Icon -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="1"></circle>
+                      <circle cx="19" cy="12" r="1"></circle>
+                      <circle cx="5" cy="12" r="1"></circle>
+                    </svg>
+                  </div>
+                  <span class="text-xs font-medium text-gray-700 mt-2"
+                    >More</span
+                  >
+                </a>
+              </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-semibold text-spendly-dark">
+                  Transaction History
+                </h3>
+                <a
+                  href="javascript:void(0)"
+                  class="text-sm font-medium text-spendly-blue hover:underline"
+                  >See All</a
+                >
+              </div>
+              <div class="space-y-3">
+                <!-- Transaction Item 1 -->
+                <div
+                  class="bg-white p-4 rounded-xl shadow-sm flex items-center space-x-4"
+                >
+                  <div
+                    class="w-10 h-10 bg-red-100 text-red-600 rounded-full flex items-center justify-center"
+                  >
+                    <!-- Shopping Bag Icon -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                      ></path>
+                      <line x1="3" y1="6" x2="21" y2="6"></line>
+                      <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="font-medium text-spendly-dark">Shopping</h4>
+                    <p class="text-sm text-spendly-gray">Groceries</p>
+                  </div>
+                  <span class="font-medium text-red-600">-$10.00</span>
+                </div>
+                <!-- Transaction Item 2 -->
+                <div
+                  class="bg-white p-4 rounded-xl shadow-sm flex items-center space-x-4"
+                >
+                  <div
+                    class="w-10 h-10 bg-blue-100 text-spendly-blue rounded-full flex items-center justify-center"
+                  >
+                    <!-- T-shirt Icon -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M20.38 3.46L16 2a4 4 0 0 0-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="font-medium text-spendly-dark">Clothing</h4>
+                    <p class="text-sm text-spendly-gray">New T-shirt</p>
+                  </div>
+                  <span class="font-medium text-red-600">-$12.20</span>
+                </div>
+                <!-- Transaction Item 3 -->
+                <div
+                  class="bg-white p-4 rounded-xl shadow-sm flex items-center space-x-4"
+                >
+                  <div
+                    class="w-10 h-10 bg-green-100 text-spendly-green rounded-full flex items-center justify-center"
+                  >
+                    <!-- Dollar Sign -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <line x1="12" y1="1" x2="12" y2="23"></line>
+                      <path
+                        d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="font-medium text-spendly-dark">Paycheck</h4>
+                    <p class="text-sm text-spendly-gray">Part-time Job</p>
+                  </div>
+                  <span class="font-medium text-green-600">+$280.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End of #view-home -->
+
+          <!-- Stats View -->
+          <div id="view-stats" class="app-view p-6">
+            <h2 class="text-xl font-semibold text-spendly-dark mb-4">
+              Detailed Statistics
+            </h2>
+            <div
+              class="bg-white p-8 rounded-xl shadow-sm flex items-center justify-center h-64"
+            >
+              <p class="text-spendly-gray">
+                Full statistics chart will be here.
+              </p>
+            </div>
+          </div>
+
+          <!-- Alerts View -->
+          <div id="view-alerts" class="app-view p-6">
+            <h2 class="text-xl font-semibold text-spendly-dark mb-4">
+              Notifications & Alerts
+            </h2>
+            <div class="bg-white p-4 rounded-xl shadow-sm">
+              <div
+                class="flex items-center space-x-3 p-3 border-b border-gray-100"
+              >
+                <div
+                  class="w-10 h-10 bg-blue-100 text-spendly-blue rounded-full flex items-center justify-center flex-shrink-0"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                    <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-medium text-spendly-dark">Budget Update</h3>
+                  <p class="text-sm text-spendly-gray">
+                    You've spent 80% of your Shopping budget.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-3 p-3">
+                <div
+                  class="w-10 h-10 bg-green-100 text-spendly-green rounded-full flex items-center justify-center flex-shrink-0"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path
+                      d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                    ></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-medium text-spendly-dark">
+                    Payment Received
+                  </h3>
+                  <p class="text-sm text-spendly-gray">
+                    Paycheck of $280.00 received.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile View -->
+          <div id="view-profile" class="app-view p-6 space-y-4">
+            <div
+              class="flex flex-col items-center bg-white p-6 rounded-xl shadow-sm"
+            >
+              <img
+                src="https://placehold.co/100x100/E0F2FE/3B82F6?text=U"
+                alt="User Profile"
+                class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-200"
+                onerror="this.src='https://placehold.co/100x100/E0F2FE/3B82F6?text=U'"
+              />
+              <h2 class="text-xl font-semibold text-spendly-dark">User Name</h2>
+              <p class="text-spendly-gray">user@example.com</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm">
+              <a
+                href="javascript:void(0)"
+                class="block p-3 text-spendly-dark font-medium hover:bg-gray-50 rounded-lg"
+                >Account Settings</a
+              >
+              <a
+                href="javascript:void(0)"
+                class="block p-3 text-spendly-dark font-medium hover:bg-gray-50 rounded-lg"
+                >Manage Budgets</a
+              >
+              <a
+                href="javascript:void(0)"
+                class="block p-3 text-spendly-dark font-medium hover:bg-gray-50 rounded-lg"
+                >Help & Support</a
+              >
+              <a
+                href="javascript:void(0)"
+                onclick="showPage('authPage')"
+                class="block p-3 text-red-600 font-medium hover:bg-red-50 rounded-lg"
+                >Log Out</a
+              >
+            </div>
+          </div>
+
+          <!-- Add Transaction View -->
+          <div id="view-add" class="app-view p-6">
+            <h2 class="text-xl font-semibold text-spendly-dark mb-4">
+              Add New Transaction
+            </h2>
+            <form class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+              <div>
+                <label
+                  for="add-amount"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Amount</label
+                >
+                <input
+                  type="number"
+                  id="add-amount"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                  placeholder="$0.00"
+                />
+              </div>
+              <div>
+                <label
+                  for="add-category"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Category</label
+                >
+                <select
+                  id="add-category"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none bg-white"
+                >
+                  <option>Shopping</option>
+                  <option>Clothing</option>
+                  <option>Paycheck</option>
+                  <option>Groceries</option>
+                  <option>Rent</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  for="add-notes"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Notes (Optional)</label
+                >
+                <input
+                  type="text"
+                  id="add-notes"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                  placeholder="e.g., Weekly groceries"
+                />
+              </div>
+              <button
+                type="submit"
+                onclick="event.preventDefault(); showAppView('view-home', document.getElementById('nav-home'));"
+                class="w-full bg-spendly-green text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-spendly-green/90 transition duration-300"
+              >
+                Add Transaction
+              </button>
+            </form>
+          </div>
+
+          <!-- Transfer View -->
+          <div id="view-transfer" class="app-view p-6">
+            <h2 class="text-xl font-semibold text-spendly-dark mb-4">
+              Transfer Money
+            </h2>
+            <div
+              class="bg-white p-8 rounded-xl shadow-sm flex items-center justify-center h-64"
+            >
+              <p class="text-spendly-gray">Transfer form will be here.</p>
+            </div>
+          </div>
+
+          <!-- Payment View -->
+          <div id="view-payment" class="app-view p-6">
+            <h2 class="text-xl font-semibold text-spendly-dark mb-4">
+              Make a Payment
+            </h2>
+            <div
+              class="bg-white p-8 rounded-xl shadow-sm flex items-center justify-center h-64"
+            >
+              <p class="text-spendly-gray">Payment form will be here.</p>
+            </div>
+          </div>
+
+          <!-- Savings View -->
+          <div id="view-savings" class="app-view p-6">
+            <h2 class="text-xl font-semibold text-spendly-dark mb-4">
+              Your Savings
+            </h2>
+            <div
+              class="bg-white p-8 rounded-xl shadow-sm flex items-center justify-center h-64"
+            >
+              <p class="text-spendly-gray">Savings goals will be here.</p>
+            </div>
+          </div>
+
+          <!-- More Services View -->
+          <div id="view-more" class="app-view p-6">
+            <h2 class="text-xl font-semibold text-spendly-dark mb-4">
+              More Services
+            </h2>
+            <div
+              class="bg-white p-8 rounded-xl shadow-sm flex items-center justify-center h-64"
+            >
+              <p class="text-spendly-gray">
+                Other services will be listed here.
+              </p>
+            </div>
+          </div>
+        </main>
+
+        <!-- App Bottom Navigation -->
+        <nav
+          id="appBottomNav"
+          class="bg-white sticky bottom-0 z-10 px-6 py-3 flex justify-around items-center border-t border-gray-200 shadow-[0_-2px_5px_rgba(0,0,0,0.05)]"
+        >
+          <!-- Home (Active) -->
+          <a
+            id="nav-home"
+            href="javascript:void(0)"
+            onclick="showAppView('view-home', this)"
+            class="flex flex-col items-center text-spendly-blue"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span class="text-xs font-medium">Home</span>
+          </a>
+          <!-- Statistics -->
+          <a
+            id="nav-stats"
+            href="javascript:void(0)"
+            onclick="showAppView('view-stats', this)"
+            class="flex flex-col items-center text-spendly-gray hover:text-spendly-blue"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+              <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+            </svg>
+            <span class="text-xs font-medium">Stats</span>
+          </a>
+          <!-- Add Transaction -->
+          <a
+            href="javascript:void(0)"
+            onclick="showAppView('view-add', null, 'Add Transaction')"
+            class="flex flex-col items-center text-white -mt-12"
+          >
+            <div
+              class="w-16 h-16 bg-spendly-green rounded-full flex items-center justify-center shadow-lg border-4 border-white"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </div>
+          </a>
+          <!-- Notifications -->
+          <a
+            id="nav-alerts"
+            href="javascript:void(0)"
+            onclick="showAppView('view-alerts', this)"
+            class="flex flex-col items-center text-spendly-gray hover:text-spendly-blue"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="text-xs font-medium">Alerts</span>
+          </a>
+          <!-- Profile -->
+          <a
+            id="nav-profile"
+            href="javascript:void(0)"
+            onclick="showAppView('view-profile', this)"
+            class="flex flex-col items-center text-spendly-gray hover:text-spendly-blue"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span class="text-xs font-medium">Profile</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- ######################## -->
+    <!--    Original Landing Page (Info) -->
+    <!-- ######################## -->
+    <div id="landingPage" class="hidden">
+      <!-- Header & Navigation -->
+      <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav
+          class="container mx-auto px-6 py-4 flex justify-between items-center"
+        >
+          <!-- Logo & Brand Name -->
+          <a
+            href="javascript:void(0)"
+            onclick="showPage('landingPage')"
+            class="flex items-center space-x-2 text-2xl font-bold"
+          >
+            <!-- Simple SVG wallet icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-spendly-green"
+            >
+              <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+              <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+              <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+            </svg>
+            <span class="text-spendly-dark">Spendly</span>
+          </a>
+
+          <!-- Navigation Links -->
+          <div class="hidden md:flex items-center space-x-6">
+            <a
+              href="#features"
+              class="text-gray-600 hover:text-spendly-blue transition duration-300"
+              >Features</a
+            >
+            <a
+              href="#about"
+              class="text-gray-600 hover:text-spendly-blue transition duration-300"
+              >About Us</a
+            >
+            <a
+              href="#contact"
+              class="text-gray-600 hover:text-spendly-blue transition duration-300"
+              >Contact</a
+            >
+          </div>
+
+          <!-- CTA Button -->
+          <a
+            href="javascript:void(0)"
+            onclick="showPage('authPage')"
+            class="hidden md:block bg-spendly-green text-white px-5 py-2 rounded-lg font-medium shadow-md hover:bg-spendly-green/90 transition duration-300"
+          >
+            Login / Sign Up
+          </a>
+
+          <!-- Mobile Menu Button (placeholder) -->
+          <button class="md:hidden text-spendly-dark">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </nav>
+      </header>
+
+      <!-- Main Content -->
+      <main>
+        <!-- Hero Section -->
+        <section
+          class="container mx-auto px-6 py-20 md:py-32 flex flex-col md:flex-row items-center"
+        >
+          <!-- Hero Text -->
+          <div class="md:w-1/2 lg:w-3/5 text-center md:text-left mb-12 md:mb-0">
+            <h1
+              class="text-4xl md:text-5xl lg:text-6xl font-bold text-spendly-dark mb-4 leading-tight"
+            >
+              Friendly spending,
+            </h1>
+            <h2
+              class="text-4xl md:text-5xl lg:text-6xl font-bold text-spendly-green mb-6 leading-tight"
+            >
+              make it Spendly.
+            </h2>
+            <p class="text-lg text-gray-700 mb-8 max-w-lg mx-auto md:mx-0">
+              The simple, smart, and social finance app built for students and
+              young adults. Finally take control of your budget, track expenses,
+              and reach your savings goals.
+            </p>
+            <div class="flex justify-center md:justify-start space-x-4">
+              <a
+                href="javascript:void(0)"
+                onclick="showPage('authPage')"
+                class="bg-spendly-green text-white px-8 py-3 rounded-lg font-semibold text-lg shadow-lg hover:bg-spendly-green/90 transition duration-300"
+              >
+                Get Started
+              </a>
+              <a
+                href="#features"
+                class="bg-gray-200 text-spendly-dark px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-300 transition duration-300"
+              >
+                Learn More
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero Image (App Mockup) -->
+          <div class="md:w-1/2 lg:w-2/5 flex justify-center">
+            <!-- Using placehold.co to mimic the app screenshot from the PDF -->
+            <img
+              src="https://placehold.co/350x700/E0F2FE/3B82F6?text=Spendly+App+UI"
+              alt="Spendly App Dashboard Mockup"
+              class="rounded-3xl shadow-2xl"
+              style="transform: rotate(3deg)"
+              onerror="this.src='https://placehold.co/350x700/E0F2FE/3B82F6?text=App+Preview'"
+            />
+          </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="bg-white py-20 md:py-28">
+          <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+              <h2 class="text-3xl md:text-4xl font-bold text-spendly-dark mb-4">
+                Everything you need to manage your money.
+              </h2>
+              <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+                Spendly is designed to be simple, effective, and seamless for
+                your busy life.
+              </p>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid md:grid-cols-3 gap-10">
+              <!-- Feature 1: Track Income -->
+              <div
+                class="bg-spendly-light p-8 rounded-xl shadow-md text-center"
+              >
+                <div
+                  class="bg-spendly-green text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
+                >
+                  <!-- Icon: Trending Up -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                    <polyline points="17 6 23 6 23 12"></polyline>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-spendly-dark mb-3">
+                  Track Income & Expenses
+                </h3>
+                <p class="text-gray-700">
+                  Effortlessly track your income and expenses with our
+                  easy-to-navigate homescreen. Know where every euro goes.
+                </p>
+              </div>
+
+              <!-- Feature 2: Custom Budgets -->
+              <div
+                class="bg-spendly-light p-8 rounded-xl shadow-md text-center"
+              >
+                <div
+                  class="bg-spendly-green text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
+                >
+                  <!-- Icon: Target -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="6"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-spendly-dark mb-3">
+                  Set Custom Budgets
+                </h3>
+                <p class="text-gray-700">
+                  Setting custom budgets and savings goals has never been so
+                  seamless. Plan for rent, books, or a night out.
+                </p>
+              </div>
+
+              <!-- Feature 3: Visual Dashboard -->
+              <div
+                class="bg-spendly-light p-8 rounded-xl shadow-md text-center"
+              >
+                <div
+                  class="bg-spendly-green text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
+                >
+                  <!-- Icon: Pie Chart -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                    <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-spendly-dark mb-3">
+                  Visual Dashboard
+                </h3>
+                <p class="text-gray-700">
+                  With our visual dashboard, you can see exactly where your
+                  money goes, making your budgeting simple and effective.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="bg-spendly-light py-20 md:py-28">
+          <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+              <h2 class="text-3xl md:text-4xl font-bold text-spendly-dark mb-4">
+                Meet the Founders
+              </h2>
+              <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+                We're a team of students who faced the same budgeting problems
+                you do. That's why we built Spendly.
+              </p>
+            </div>
+
+            <!-- Founders Grid -->
+            <div class="grid md:grid-cols-3 gap-10 max-w-4xl mx-auto">
+              <!-- Founder 1: Silva Hassan -->
+              <div class="bg-white p-8 rounded-xl shadow-md text-center">
+                <img
+                  src="https://placehold.co/100x100/E0F2FE/3B82F6?text=SH"
+                  alt="Silva Hassan"
+                  class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-200"
+                  onerror="this.src='https://placehold.co/100x100/E0F2FE/3B82F6?text=SH'"
+                />
+                <h3 class="text-xl font-semibold text-spendly-dark mb-1">
+                  Silva Hassan
+                </h3>
+                <p class="text-spendly-blue font-medium">
+                  Chief Executive Officer (CEO)
+                </p>
+              </div>
+
+              <!-- Founder 2: Zarah Gilmore -->
+              <div class="bg-white p-8 rounded-xl shadow-md text-center">
+                <img
+                  src="https://placehold.co/100x100/E0F2FE/3B82F6?text=ZG"
+                  alt="Zarah Gilmore"
+                  class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-200"
+                  onerror="this.src='https://placehold.co/100x100/E0F2FE/3B82F6?text=ZG'"
+                />
+                <h3 class="text-xl font-semibold text-spendly-dark mb-1">
+                  Zarah Gilmore
+                </h3>
+                <p class="text-spendly-blue font-medium">
+                  Chief Technology Officer (CTO)
+                </p>
+              </div>
+
+              <!-- Founder 3: Barin Zakaria -->
+              <div class="bg-white p-8 rounded-xl shadow-md text-center">
+                <img
+                  src="https://placehold.co/100x100/E0F2FE/3B82F6?text=BZ"
+                  alt="Barin Zakaria"
+                  class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-200"
+                  onerror="this.src='https://placehold.co/100x100/E0F2FE/3B82F6?text=BZ'"
+                />
+                <h3 class="text-xl font-semibold text-spendly-dark mb-1">
+                  Barin Zakaria
+                </h3>
+                <p class="text-spendly-blue font-medium">
+                  Chief Marketing Officer (CMO)
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer id="contact" class="bg-spendly-dark text-white py-16">
+        <div class="container mx-auto px-6 grid md:grid-cols-3 gap-12">
+          <!-- Column 1: Brand & Slogan -->
+          <div>
+            <a
+              href="javascript:void(0)"
+              onclick="showPage('landingPage')"
+              class="flex items-center space-x-2 text-2xl font-bold mb-4"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-spendly-green"
+              >
+                <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+                <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+                <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+              </svg>
+              <span>Spendly</span>
+            </a>
+            <p class="text-gray-400">'Friendly spending, make it Spendly.'</p>
+          </div>
+
+          <!-- Column 2: Contact Info -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+            <ul class="space-y-3 text-gray-300">
+              <li class="flex items-center space-x-3">
+                <!-- Icon: Mail -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-spendly-green"
+                >
+                  <path
+                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                  ></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <a
+                  href="mailto:spendly.support@gmail.com"
+                  class="hover:text-white"
+                  >spendly.support@gmail.com</a
+                >
+              </li>
+              <li class="flex items-center space-x-3">
+                <!-- Icon: Phone -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-spendly-green"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                  ></path>
+                </svg>
+                <span>+31 6 21 89 67 45</span>
+              </li>
+              <li class="flex items-center space-x-3">
+                <!-- Icon: Map Pin -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-spendly-green"
+                >
+                  <path
+                    d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
+                  ></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>Tegelseweg 255, Venlo</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Quick Links -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+            <ul class="space-y-3 text-gray-300">
+              <li><a href="#features" class="hover:text-white">Features</a></li>
+              <li><a href="#about" class="hover:text-white">About Us</a></li>
+              <li>
+                <a href="javascript:void(0)" class="hover:text-white"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a href="javascript:void(0)" class="hover:text-white"
+                  >Terms of Service</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+          <p class="text-gray-400">&copy; 2025 Spendly. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Page Control JavaScript -->
+    <script>
+      // Get references to the main page containers
+      const landingPage = document.getElementById('landingPage');
+      const authPage = document.getElementById('authPage');
+      const appPage = document.getElementById('appPage');
+
+      // Get references to auth forms
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+
+      // Get references to app components
+      const appHeader = document.getElementById('appHeader');
+      const appHeaderTitle = document.getElementById('appHeaderTitle');
+      const appHeaderSubtitle = document.getElementById('appHeaderSubtitle');
+      const appHeaderButton = document.getElementById('appHeaderButton');
+      const appMainContent = document.getElementById('appMainContent');
+      const appBottomNav = document.getElementById('appBottomNav');
+
+      // Store SVG icons for header button
+      const logoutIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>`;
+      const backIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>`;
+
+      // Helper function to show a specific page (Auth, App, Landing)
+      function showPage(pageId) {
+        // Hide all pages
+        landingPage.classList.add('hidden');
+        authPage.classList.add('hidden');
+        appPage.classList.add('hidden');
+
+        // Show the requested page
+        const pageToShow = document.getElementById(pageId);
+        if (pageToShow) {
+          pageToShow.classList.remove('hidden');
+        }
+
+        // Reset app view to home when showing app page
+        if (pageId === 'appPage') {
+          showAppView('view-home', document.getElementById('nav-home'));
+        }
+
+        // Scroll to top when changing pages
+        window.scrollTo(0, 0);
+      }
+
+      // Helper function to toggle auth forms
+      function showAuthForm(formName) {
+        if (formName === 'signup') {
+          loginForm.classList.add('hidden');
+          signupForm.classList.remove('hidden');
+        } else {
+          signupForm.classList.add('hidden');
+          loginForm.classList.remove('hidden');
+        }
+      }
+
+      /**
+       * Shows a specific view within the app page.
+       * @param {string} viewId - The ID of the app view to show (e.g., 'view-home', 'view-stats').
+       * @param {HTMLElement | null} navElement - The nav bar element that was clicked, for styling.
+       * @param {string | null} viewTitle - If provided, sets the header title and shows a back button.
+       */
+      function showAppView(viewId, navElement, viewTitle = null) {
+        // 1. Hide all app views
+        appMainContent.querySelectorAll('.app-view').forEach((view) => {
+          view.classList.remove('active');
+          view.classList.add('hidden'); // Use hidden for tailwind compatibility
+        });
+
+        // 2. Show the requested view
+        const viewToShow = document.getElementById(viewId);
+        if (viewToShow) {
+          viewToShow.classList.add('active');
+          viewToShow.classList.remove('hidden');
+        }
+
+        // 3. Handle Nav Bar active state
+        if (navElement && navElement.closest('#appBottomNav')) {
+          // Reset all nav links to gray
+          appBottomNav.querySelectorAll('a').forEach((link) => {
+            // Check for the text-spendly-blue class specifically
+            if (link.classList.contains('text-spendly-blue')) {
+              link.classList.remove('text-spendly-blue');
+              link.classList.add('text-spendly-gray');
+            }
+          });
+
+          // Set the clicked one to blue
+          navElement.classList.remove('text-spendly-gray');
+          navElement.classList.add('text-spendly-blue');
+        }
+
+        // 4. Handle Header and Nav Bar visibility/state
+        if (viewTitle) {
+          // This is a "sub-view" (like Transfer or Add Transaction)
+          appHeaderTitle.innerText = viewTitle;
+          appHeaderSubtitle.classList.add('hidden');
+          appHeaderButton.innerHTML = backIconSVG;
+          // Set onclick to go back to the home view
+          appHeaderButton.onclick = () =>
+            showAppView('view-home', document.getElementById('nav-home'));
+          appBottomNav.classList.add('hidden'); // Hide bottom nav
+        } else {
+          // This is a "main view" (like Home, Stats, Profile)
+          let title = viewId.replace('view-', '');
+          title = title.charAt(0).toUpperCase() + title.slice(1);
+          appHeaderTitle.innerText = title;
+          appHeaderSubtitle.classList.remove('hidden'); // Show subtitle
+
+          // Set header button back to logout
+          appHeaderButton.innerHTML = logoutIconSVG;
+          appHeaderButton.onclick = () => showPage('authPage');
+          appBottomNav.classList.remove('hidden'); // Show bottom nav
+        }
+      }
+
+      // Mock login function
+      function login(event) {
+        event.preventDefault(); // Stop the form from submitting
+        showPage('appPage'); // Show the main app page
+      }
+
+      // --- Initial Page Load ---
+      // We start by showing the 'authPage' by default.
+      document.addEventListener('DOMContentLoaded', () => {
+        // We start by showing the 'authPage' by default.
+        authPage.classList.remove('hidden');
+        landingPage.classList.add('hidden');
+        appPage.classList.add('hidden');
+
+        // Set the home view as the active one inside the app
+        document.getElementById('view-home').classList.add('active');
+        document.getElementById('view-home').classList.remove('hidden');
+      });
+    </script>
+  </body>
+</html>
