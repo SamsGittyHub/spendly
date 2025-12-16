@@ -27,10 +27,11 @@
               'spendly-gray': '#6B7280',
             },
             animation: {
-              'fade-in': 'fadeIn 0.6s ease-in-out',
-              'fade-in-up': 'fadeInUp 0.6s ease-out',
-              'slide-in': 'slideIn 0.5s ease-out',
-              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'fade-in': 'fadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+              'fade-in-up': 'fadeInUp 1.8s cubic-bezier(0.4, 0, 0.2, 1)',
+              'slide-in': 'slideIn 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'float': 'float 3s ease-in-out infinite',
             },
             keyframes: {
               fadeIn: {
@@ -38,12 +39,16 @@
                 '100%': { opacity: '1' },
               },
               fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '0%': { opacity: '0', transform: 'translateY(30px)' },
                 '100%': { opacity: '1', transform: 'translateY(0)' },
               },
               slideIn: {
-                '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                '0%': { transform: 'translateX(-30px)', opacity: '0' },
                 '100%': { transform: 'translateX(0)', opacity: '1' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-10px)' },
               },
             },
           },
@@ -69,27 +74,40 @@
       }
       .app-view.active {
         display: block; /* Shown by JS */
-        animation: fadeIn 0.3s ease-in-out;
+        animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      /* Enhanced button hover effects */
+      /* Enhanced button hover effects - luxurious slow */
       .btn-primary {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         transform: translateY(0);
       }
       .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.4);
       }
       .btn-primary:active {
         transform: translateY(0);
-      }
-      /* Card hover effects */
-      .card-hover {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
+      /* Card hover effects - luxurious slow */
+      .card-hover {
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
       .card-hover:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transform: translateY(-6px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 15px 20px -8px rgba(0, 0, 0, 0.1);
+      }
+      /* Dark mode styles */
+      .dark .glass {
+        background: rgba(17, 24, 39, 0.95);
+        border-color: rgba(75, 85, 99, 0.3);
+      }
+      .dark .card-hover {
+        background: rgba(31, 41, 55, 0.8);
+        border-color: rgba(75, 85, 99, 0.3);
+      }
+      .dark .card-hover:hover {
+        background: rgba(31, 41, 55, 1);
       }
       /* Gradient backgrounds */
       .gradient-bg {
@@ -107,15 +125,48 @@
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
       }
-      /* Smooth transitions for all interactive elements */
+      /* Smooth transitions for all interactive elements - luxurious slow */
       * {
         transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 150ms;
+        transition-duration: 600ms;
+      }
+      /* Dark mode toggle button */
+      .dark-toggle {
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .dark-toggle:hover {
+        transform: rotate(15deg) scale(1.1);
+      }
+      /* Dark mode body background */
+      body.dark {
+        background-color: #111827;
+        color: #F9FAFB;
+      }
+      body.dark .bg-spendly-light {
+        background-color: #1F2937;
+      }
+      body.dark .text-spendly-dark {
+        color: #F9FAFB;
+      }
+      body.dark .bg-white {
+        background-color: #1F2937;
+      }
+      body.dark .text-gray-700 {
+        color: #D1D5DB;
+      }
+      body.dark .text-gray-600 {
+        color: #9CA3AF;
+      }
+      body.dark .border-gray-200 {
+        border-color: #374151;
+      }
+      body.dark .border-gray-100 {
+        border-color: #4B5563;
       }
     </style>
   </head>
-  <body class="font-sans bg-spendly-light text-spendly-dark antialiased">
+  <body class="font-sans bg-spendly-light text-spendly-dark antialiased transition-colors duration-1000">
     <!-- 
       Page Container: We'll have 3 main page divs:
       1. #authPage (Login/Signup) - Hidden
@@ -128,7 +179,7 @@
     <!-- ######################## -->
     <div
       id="authPage"
-      class="hidden min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex flex-col justify-center items-center p-4"
+      class="hidden min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col justify-center items-center p-4 transition-colors duration-1000"
     >
       <div class="max-w-md w-full animate-fade-in-up">
         <!-- Logo -->
@@ -154,45 +205,50 @@
         </div>
 
         <!-- Login Form (Default Visible) -->
-        <div id="loginForm" class="glass p-10 rounded-3xl shadow-2xl border border-gray-100">
-          <h2 class="text-2xl font-bold text-center text-spendly-dark mb-6">
+        <div id="loginForm" class="glass dark:bg-gray-800/95 dark:border-gray-700 p-10 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700">
+          <h2 class="text-2xl font-bold text-center text-spendly-dark dark:text-gray-100 mb-6">
             Welcome Back!
           </h2>
           <form>
             <div class="mb-4">
               <label
                 for="login-email"
-                class="block text-sm font-medium text-gray-700 mb-1"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >Email</label
               >
               <input
                 type="email"
                 id="login-email"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="you@example.com"
               />
             </div>
             <div class="mb-6">
               <label
                 for="login-password"
-                class="block text-sm font-medium text-gray-700 mb-1"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >Password</label
               >
               <input
                 type="password"
                 id="login-password"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="••••••••"
               />
             </div>
             <button
               onclick="login(event)"
-              class="btn-primary w-full bg-gradient-bg-green text-white py-3.5 rounded-xl font-semibold text-lg shadow-lg"
+              class="btn-primary flex items-center justify-center space-x-2 w-full bg-gradient-bg-green text-white py-3.5 rounded-xl font-semibold text-lg shadow-lg"
             >
-              Log In
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                <polyline points="10 17 15 12 10 7"></polyline>
+                <line x1="15" y1="12" x2="3" y2="12"></line>
+              </svg>
+              <span>Log In</span>
             </button>
           </form>
-          <p class="text-center text-gray-600 text-sm mt-6">
+          <p class="text-center text-gray-600 dark:text-gray-400 text-sm mt-6">
             Don't have an account?
             <a
               href="javascript:void(0)"
@@ -204,58 +260,64 @@
         </div>
 
         <!-- Signup Form (Hidden) -->
-        <div id="signupForm" class="hidden glass p-10 rounded-3xl shadow-2xl border border-gray-100">
-          <h2 class="text-2xl font-bold text-center text-spendly-dark mb-6">
+        <div id="signupForm" class="hidden glass dark:bg-gray-800/95 dark:border-gray-700 p-10 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700">
+          <h2 class="text-2xl font-bold text-center text-spendly-dark dark:text-gray-100 mb-6">
             Create Your Account
           </h2>
           <form>
             <div class="mb-4">
               <label
                 for="signup-name"
-                class="block text-sm font-medium text-gray-700 mb-1"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >Full Name</label
               >
               <input
                 type="text"
                 id="signup-name"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="Zarah Gilmore"
               />
             </div>
             <div class="mb-4">
               <label
                 for="signup-email"
-                class="block text-sm font-medium text-gray-700 mb-1"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >Email</label
               >
               <input
                 type="email"
                 id="signup-email"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="you@example.com"
               />
             </div>
             <div class="mb-6">
               <label
                 for="signup-password"
-                class="block text-sm font-medium text-gray-700 mb-1"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >Password</label
               >
               <input
                 type="password"
                 id="signup-password"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="••••••••"
               />
             </div>
             <button
               onclick="login(event)"
-              class="btn-primary w-full bg-gradient-bg-green text-white py-3.5 rounded-xl font-semibold text-lg shadow-lg"
+              class="btn-primary flex items-center justify-center space-x-2 w-full bg-gradient-bg-green text-white py-3.5 rounded-xl font-semibold text-lg shadow-lg"
             >
-              Create Account
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <line x1="19" y1="8" x2="19" y2="14"></line>
+                <line x1="22" y1="11" x2="16" y2="11"></line>
+              </svg>
+              <span>Create Account</span>
             </button>
           </form>
-          <p class="text-center text-gray-600 text-sm mt-6">
+          <p class="text-center text-gray-600 dark:text-gray-400 text-sm mt-6">
             Already have an account?
             <a
               href="javascript:void(0)"
@@ -284,28 +346,28 @@
     <div id="appPage" class="hidden">
       <!-- Constrain to mobile width and center it -->
       <div
-        class="app-container max-w-lg mx-auto min-h-screen bg-white shadow-2xl flex flex-col overflow-hidden"
+        class="app-container max-w-lg mx-auto min-h-screen bg-white dark:bg-gray-900 shadow-2xl flex flex-col overflow-hidden transition-colors duration-1000"
       >
         <!-- App Header -->
         <header
           id="appHeader"
-          class="bg-white/90 backdrop-blur-md sticky top-0 z-10 px-6 py-5 flex justify-between items-center border-b border-gray-200"
+          class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md sticky top-0 z-10 px-6 py-5 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 transition-colors duration-1000"
         >
           <div>
             <h1
               id="appHeaderTitle"
-              class="text-2xl font-bold text-spendly-dark"
+              class="text-2xl font-bold text-spendly-dark dark:text-gray-100"
             >
               Dashboard
             </h1>
-            <p id="appHeaderSubtitle" class="text-sm text-spendly-gray">
+            <p id="appHeaderSubtitle" class="text-sm text-spendly-gray dark:text-gray-400">
               Welcome back, User!
             </p>
           </div>
           <button
             id="appHeaderButton"
             onclick="showPage('authPage')"
-            class="text-spendly-gray hover:text-spendly-dark"
+            class="text-spendly-gray dark:text-gray-400 hover:text-spendly-dark dark:hover:text-gray-200"
           >
             <!-- Logout Icon -->
             <svg
@@ -329,7 +391,7 @@
         <!-- App Main Content (Scrollable) -->
         <main
           id="appMainContent"
-          class="flex-1 overflow-y-auto bg-spendly-light"
+          class="flex-1 overflow-y-auto bg-spendly-light dark:bg-gray-900 transition-colors duration-1000"
         >
           <!-- Home View (Dashboard) -->
           <div id="view-home" class="app-view active p-6 space-y-6">
@@ -411,12 +473,12 @@
             <div>
               <h3
                 src="/arrow.png"
-                class="text-lg font-semibold text-spendly-dark mb-3"
+                class="text-lg font-semibold text-spendly-dark dark:text-gray-100 mb-3"
               >
                 Statistic
               </h3>
 
-              <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+              <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
                 <!-- Placeholder for chart -->
                 <div class="h-48 flex items-center justify-center text-gray-400 bg-gradient-to-br from-gray-50 to-white rounded-xl">
                   <div class="text-center">
@@ -432,14 +494,14 @@
 
             <!-- Services -->
             <div>
-              <h3 class="text-lg font-semibold text-spendly-dark mb-3">
+              <h3 class="text-lg font-semibold text-spendly-dark dark:text-gray-100 mb-3">
                 Service
               </h3>
               <div class="grid grid-cols-4 gap-4">
                 <a
                   href="javascript:void(0)"
                   onclick="showAppView('view-transfer', null, 'Transfer')"
-                  class="flex flex-col items-center bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                  class="flex flex-col items-center bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-800 border border-gray-100 dark:border-gray-700"
                 >
                   <div
                     class="w-12 h-12 bg-blue-100 text-spendly-blue rounded-full flex items-center justify-center"
@@ -460,14 +522,14 @@
                       <polyline points="5 12 12 5 19 12"></polyline>
                     </svg>
                   </div>
-                  <span class="text-xs font-medium text-gray-700 mt-2"
+                  <span class="text-xs font-medium text-gray-700 dark:text-gray-300 mt-2"
                     >Transfer</span
                   >
                 </a>
                 <a
                   href="javascript:void(0)"
                   onclick="showAppView('view-payment', null, 'Payment')"
-                  class="flex flex-col items-center bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                  class="flex flex-col items-center bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-800 border border-gray-100 dark:border-gray-700"
                 >
                   <div
                     class="w-12 h-12 bg-green-100 text-spendly-green rounded-full flex items-center justify-center"
@@ -495,14 +557,14 @@
                       <line x1="1" y1="10" x2="23" y2="10"></line>
                     </svg>
                   </div>
-                  <span class="text-xs font-medium text-gray-700 mt-2"
+                  <span class="text-xs font-medium text-gray-700 dark:text-gray-300 mt-2"
                     >Payment</span
                   >
                 </a>
                 <a
                   href="javascript:void(0)"
                   onclick="showAppView('view-savings', null, 'Savings')"
-                  class="flex flex-col items-center bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                  class="flex flex-col items-center bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-800 border border-gray-100 dark:border-gray-700"
                 >
                   <div
                     class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center"
@@ -525,14 +587,14 @@
                       <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                   </div>
-                  <span class="text-xs font-medium text-gray-700 mt-2"
+                  <span class="text-xs font-medium text-gray-700 dark:text-gray-300 mt-2"
                     >Savings</span
                   >
                 </a>
                 <a
                   href="javascript:void(0)"
                   onclick="showAppView('view-more', null, 'More Services')"
-                  class="flex flex-col items-center bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                  class="flex flex-col items-center bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-800 border border-gray-100 dark:border-gray-700"
                 >
                   <div
                     class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center"
@@ -554,7 +616,7 @@
                       <circle cx="5" cy="12" r="1"></circle>
                     </svg>
                   </div>
-                  <span class="text-xs font-medium text-gray-700 mt-2"
+                  <span class="text-xs font-medium text-gray-700 dark:text-gray-300 mt-2"
                     >More</span
                   >
                 </a>
@@ -564,7 +626,7 @@
             <!-- Transaction History -->
             <div>
               <div class="flex justify-between items-center mb-3">
-                <h3 class="text-lg font-semibold text-spendly-dark">
+                <h3 class="text-lg font-semibold text-spendly-dark dark:text-gray-100">
                   Transaction History
                 </h3>
                 <a
@@ -576,7 +638,7 @@
               <div class="space-y-3">
                 <!-- Transaction Item 1 -->
                 <div
-                  class="card-hover bg-white p-5 rounded-xl shadow-md border border-gray-100 flex items-center space-x-4"
+                  class="card-hover bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex items-center space-x-4"
                 >
                   <div
                     class="w-10 h-10 bg-red-100 text-red-600 rounded-full flex items-center justify-center"
@@ -601,14 +663,14 @@
                     </svg>
                   </div>
                   <div class="flex-1">
-                    <h4 class="font-medium text-spendly-dark">Shopping</h4>
-                    <p class="text-sm text-spendly-gray">Groceries</p>
+                    <h4 class="font-medium text-spendly-dark dark:text-gray-100">Shopping</h4>
+                    <p class="text-sm text-spendly-gray dark:text-gray-400">Groceries</p>
                   </div>
                   <span class="font-medium text-red-600">-$10.00</span>
                 </div>
                 <!-- Transaction Item 2 -->
                 <div
-                  class="card-hover bg-white p-5 rounded-xl shadow-md border border-gray-100 flex items-center space-x-4"
+                  class="card-hover bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex items-center space-x-4"
                 >
                   <div
                     class="w-10 h-10 bg-blue-100 text-spendly-blue rounded-full flex items-center justify-center"
@@ -631,14 +693,14 @@
                     </svg>
                   </div>
                   <div class="flex-1">
-                    <h4 class="font-medium text-spendly-dark">Clothing</h4>
-                    <p class="text-sm text-spendly-gray">New T-shirt</p>
+                    <h4 class="font-medium text-spendly-dark dark:text-gray-100">Clothing</h4>
+                    <p class="text-sm text-spendly-gray dark:text-gray-400">New T-shirt</p>
                   </div>
                   <span class="font-medium text-red-600">-$12.20</span>
                 </div>
                 <!-- Transaction Item 3 -->
                 <div
-                  class="card-hover bg-white p-5 rounded-xl shadow-md border border-gray-100 flex items-center space-x-4"
+                  class="card-hover bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex items-center space-x-4"
                 >
                   <div
                     class="w-10 h-10 bg-green-100 text-spendly-green rounded-full flex items-center justify-center"
@@ -662,8 +724,8 @@
                     </svg>
                   </div>
                   <div class="flex-1">
-                    <h4 class="font-medium text-spendly-dark">Paycheck</h4>
-                    <p class="text-sm text-spendly-gray">Part-time Job</p>
+                    <h4 class="font-medium text-spendly-dark dark:text-gray-100">Paycheck</h4>
+                    <p class="text-sm text-spendly-gray dark:text-gray-400">Part-time Job</p>
                   </div>
                   <span class="font-medium text-green-600">+$280.00</span>
                 </div>
@@ -801,20 +863,20 @@
               <div>
                 <label
                   for="add-amount"
-                  class="block text-sm font-medium text-gray-700 mb-1"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                   >Amount</label
                 >
                 <input
                   type="number"
                   id="add-amount"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                  class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   placeholder="$0.00"
                 />
               </div>
               <div>
                 <label
                   for="add-category"
-                  class="block text-sm font-medium text-gray-700 mb-1"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                   >Category</label
                 >
                 <select
@@ -831,22 +893,26 @@
               <div>
                 <label
                   for="add-notes"
-                  class="block text-sm font-medium text-gray-700 mb-1"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                   >Notes (Optional)</label
                 >
                 <input
                   type="text"
                   id="add-notes"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none"
+                  class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-spendly-blue focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   placeholder="e.g., Weekly groceries"
                 />
               </div>
               <button
                 type="submit"
                 onclick="event.preventDefault(); showAppView('view-home', document.getElementById('nav-home'));"
-                class="btn-primary w-full bg-gradient-bg-green text-white py-3.5 rounded-xl font-semibold text-lg shadow-lg"
+                class="btn-primary flex items-center justify-center space-x-2 w-full bg-gradient-bg-green text-white py-3.5 rounded-xl font-semibold text-lg shadow-lg"
               >
-                Add Transaction
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Add Transaction</span>
               </button>
             </form>
           </div>
@@ -905,7 +971,7 @@
         <!-- App Bottom Navigation -->
         <nav
           id="appBottomNav"
-          class="bg-white sticky bottom-0 z-10 px-6 py-3 flex justify-around items-center border-t border-gray-200 shadow-[0_-2px_5px_rgba(0,0,0,0.05)]"
+          class="bg-white dark:bg-gray-800 sticky bottom-0 z-10 px-6 py-3 flex justify-around items-center border-t border-gray-200 dark:border-gray-700 shadow-[0_-2px_5px_rgba(0,0,0,0.05)] dark:shadow-[0_-2px_5px_rgba(0,0,0,0.3)] transition-colors duration-1000"
         >
           <!-- Home (Active) -->
           <a
@@ -1033,7 +1099,7 @@
     <!-- ######################## -->
     <div id="landingPage" class="hidden">
       <!-- Header & Navigation -->
-      <header class="glass sticky top-0 z-50 shadow-md border-b border-gray-100">
+      <header class="glass dark:bg-gray-900/95 dark:border-gray-700 sticky top-0 z-50 shadow-md border-b border-gray-100 dark:border-gray-700">
         <nav
           class="container mx-auto px-6 py-5 flex justify-between items-center"
         >
@@ -1060,39 +1126,72 @@
               <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
               <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
             </svg>
-            <span class="text-spendly-dark">Spendly</span>
+            <span class="text-spendly-dark dark:text-gray-100">Spendly</span>
           </a>
 
           <!-- Navigation Links -->
           <div class="hidden md:flex items-center space-x-6">
             <a
               href="#features"
-              class="text-gray-600 hover:text-spendly-blue transition duration-300"
+              class="text-gray-600 dark:text-gray-300 hover:text-spendly-blue dark:hover:text-spendly-green transition-all duration-800"
               >Features</a
             >
             <a
               href="#about"
-              class="text-gray-600 hover:text-spendly-blue transition duration-300"
+              class="text-gray-600 dark:text-gray-300 hover:text-spendly-blue dark:hover:text-spendly-green transition-all duration-800"
               >About Us</a
             >
             <a
               href="#contact"
-              class="text-gray-600 hover:text-spendly-blue transition duration-300"
+              class="text-gray-600 dark:text-gray-300 hover:text-spendly-blue dark:hover:text-spendly-green transition-all duration-800"
               >Contact</a
             >
           </div>
 
-          <!-- CTA Button -->
-          <a
-            href="javascript:void(0)"
-            onclick="showPage('authPage')"
-            class="btn-primary hidden md:block bg-gradient-bg-green text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg"
-          >
-            Login / Sign Up
-          </a>
+          <!-- Dark Mode Toggle & CTA -->
+          <div class="flex items-center space-x-4">
+            <!-- Dark Mode Toggle -->
+            <button
+              id="darkModeToggle"
+              onclick="toggleDarkMode()"
+              class="dark-toggle p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-800"
+              aria-label="Toggle dark mode"
+            >
+              <!-- Sun Icon (Light Mode) -->
+              <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-all duration-800">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+              <!-- Moon Icon (Dark Mode) -->
+              <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden transition-all duration-800">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </button>
+
+            <!-- CTA Button -->
+            <a
+              href="javascript:void(0)"
+              onclick="showPage('authPage')"
+              class="btn-primary hidden md:flex items-center space-x-2 bg-gradient-bg-green text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                <polyline points="10 17 15 12 10 7"></polyline>
+                <line x1="15" y1="12" x2="3" y2="12"></line>
+              </svg>
+              <span>Login / Sign Up</span>
+            </a>
+          </div>
 
           <!-- Mobile Menu Button (placeholder) -->
-          <button class="md:hidden text-spendly-dark">
+          <button class="md:hidden text-spendly-dark dark:text-gray-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -1142,15 +1241,23 @@
               <a
                 href="javascript:void(0)"
                 onclick="showPage('authPage')"
-                class="btn-primary bg-gradient-bg-green text-white px-10 py-4 rounded-xl font-bold text-lg shadow-xl text-center"
+                class="btn-primary flex items-center justify-center space-x-2 bg-gradient-bg-green text-white px-10 py-4 rounded-xl font-bold text-lg shadow-xl text-center"
               >
-                Get Started Free
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5l7 7-7 7"></path>
+                </svg>
+                <span>Get Started Free</span>
               </a>
               <a
                 href="#features"
-                class="bg-white text-spendly-dark px-10 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl border-2 border-gray-200 hover:border-spendly-green/30 transition-all text-center"
+                class="flex items-center justify-center space-x-2 bg-white dark:bg-gray-800 text-spendly-dark dark:text-gray-100 px-10 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl border-2 border-gray-200 dark:border-gray-700 hover:border-spendly-green/30 dark:hover:border-spendly-green/50 transition-all text-center"
               >
-                Learn More
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 16 12 12 12 8"></polyline>
+                </svg>
+                <span>Learn More</span>
               </a>
             </div>
           </div>
@@ -1221,14 +1328,14 @@
         </section>
 
         <!-- Features Section -->
-        <section id="features" class="bg-spendly-light py-20 md:py-28">
+        <section id="features" class="bg-spendly-light dark:bg-gray-900 py-20 md:py-28 transition-colors duration-1000">
           <div class="container mx-auto px-6">
             <!-- Section Header -->
             <div class="text-center mb-16">
-              <h2 class="text-3xl md:text-4xl font-bold text-spendly-dark mb-4">
+              <h2 class="text-3xl md:text-4xl font-bold text-spendly-dark dark:text-gray-100 mb-4">
                 Everything you need to manage your money.
               </h2>
-              <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+              <p class="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
                 Spendly is designed to be simple, effective, and seamless for
                 your busy life.
               </p>
@@ -1238,7 +1345,7 @@
             <div class="grid md:grid-cols-3 gap-8">
               <!-- Feature 1: Track Income -->
               <div
-                class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center"
+                class="card-hover bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-center"
               >
                 <div
                   class="bg-gradient-bg-green text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl transform hover:scale-110 transition-transform"
@@ -1259,10 +1366,10 @@
                     <polyline points="17 6 23 6 23 12"></polyline>
                   </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-spendly-dark mb-4">
+                <h3 class="text-2xl font-bold text-spendly-dark dark:text-gray-100 mb-4">
                   Track Income & Expenses
                 </h3>
-                <p class="text-gray-600 leading-relaxed">
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                   Effortlessly track your income and expenses with our
                   easy-to-navigate homescreen. Know where every euro goes.
                 </p>
@@ -1270,7 +1377,7 @@
 
               <!-- Feature 2: Custom Budgets -->
               <div
-                class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center"
+                class="card-hover bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-center"
               >
                 <div
                   class="bg-gradient-bg-blue text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl transform hover:scale-110 transition-transform"
@@ -1292,10 +1399,10 @@
                     <circle cx="12" cy="12" r="2"></circle>
                   </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-spendly-dark mb-4">
+                <h3 class="text-2xl font-bold text-spendly-dark dark:text-gray-100 mb-4">
                   Set Custom Budgets
                 </h3>
-                <p class="text-gray-600 leading-relaxed">
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                   Setting custom budgets and savings goals has never been so
                   seamless. Plan for rent, books, or a night out.
                 </p>
@@ -1303,7 +1410,7 @@
 
               <!-- Feature 3: Visual Dashboard -->
               <div
-                class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center"
+                class="card-hover bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-center"
               >
                 <div
                   class="bg-gradient-to-br from-purple-500 to-pink-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl transform hover:scale-110 transition-transform"
@@ -1324,10 +1431,10 @@
                     <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
                   </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-spendly-dark mb-4">
+                <h3 class="text-2xl font-bold text-spendly-dark dark:text-gray-100 mb-4">
                   Visual Dashboard
                 </h3>
-                <p class="text-gray-600 leading-relaxed">
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                   With our visual dashboard, you can see exactly where your
                   money goes, making your budgeting simple and effective.
                 </p>
@@ -1337,14 +1444,14 @@
         </section>
 
         <!-- About Us Section -->
-        <section id="about" class="bg-spendly-light py-20 md:py-28">
+        <section id="about" class="bg-spendly-light dark:bg-gray-900 py-20 md:py-28 transition-colors duration-1000">
           <div class="container mx-auto px-6">
             <!-- Section Header -->
             <div class="text-center mb-16">
-              <h2 class="text-3xl md:text-4xl font-bold text-spendly-dark mb-4">
+              <h2 class="text-3xl md:text-4xl font-bold text-spendly-dark dark:text-gray-100 mb-4">
                 Meet the Founders
               </h2>
-              <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+              <p class="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
                 We're a team of students who faced the same budgeting problems
                 you do. That's why we built Spendly.
               </p>
@@ -1353,34 +1460,34 @@
             <!-- Founders Grid -->
             <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <!-- Founder 1: Silva Hassan -->
-              <div class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center">
+              <div class="card-hover bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-center">
                 <div class="relative inline-block mb-6">
                   <div class="absolute inset-0 bg-gradient-to-r from-spendly-green to-spendly-blue rounded-full blur-xl opacity-30"></div>
                   <img
-                    src="https://placehold.co/120x120/E0F2FE/3B82F6?text=SH"
+                    src="./silva hassan.jpeg"
                     alt="Silva Hassan"
-                    class="relative w-28 h-28 rounded-full mx-auto border-4 border-white shadow-xl"
+                    class="relative w-28 h-28 rounded-full mx-auto border-4 border-white dark:border-gray-800 shadow-xl object-cover"
                     onerror="this.src='https://placehold.co/120x120/E0F2FE/3B82F6?text=SH'"
                   />
                 </div>
-                <h3 class="text-2xl font-bold text-spendly-dark mb-2">
+                <h3 class="text-2xl font-bold text-spendly-dark dark:text-gray-100 mb-2">
                   Silva Hassan
                 </h3>
                 <p class="text-spendly-blue font-semibold text-lg">Co-Founder</p>
               </div>
 
               <!-- Founder 2: Zarah Gilmore -->
-              <div class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center">
+              <div class="card-hover bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-center">
                 <div class="relative inline-block mb-6">
                   <div class="absolute inset-0 bg-gradient-to-r from-spendly-blue to-purple-500 rounded-full blur-xl opacity-30"></div>
                   <img
-                    src="https://placehold.co/120x120/E0F2FE/3B82F6?text=ZG"
+                    src="./Zarah Gilmore.jpeg"
                     alt="Zarah Gilmore"
-                    class="relative w-28 h-28 rounded-full mx-auto border-4 border-white shadow-xl"
+                    class="relative w-28 h-28 rounded-full mx-auto border-4 border-white dark:border-gray-800 shadow-xl object-cover"
                     onerror="this.src='https://placehold.co/120x120/E0F2FE/3B82F6?text=ZG'"
                   />
                 </div>
-                <h3 class="text-2xl font-bold text-spendly-dark mb-2">
+                <h3 class="text-2xl font-bold text-spendly-dark dark:text-gray-100 mb-2">
                   Zarah Gilmore
                 </h3>
                 <p class="text-spendly-blue font-semibold text-lg">Co-Founder</p>
@@ -1643,9 +1750,56 @@
         showPage('appPage'); // Show the main app page
       }
 
+      // Dark Mode Toggle Function
+      function toggleDarkMode() {
+        const body = document.body;
+        const html = document.documentElement;
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        
+        // Toggle dark class on body and html
+        body.classList.toggle('dark');
+        html.classList.toggle('dark');
+        
+        // Toggle icons with smooth transition
+        if (body.classList.contains('dark')) {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+          localStorage.setItem('darkMode', 'enabled');
+        } else {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+          localStorage.setItem('darkMode', 'disabled');
+        }
+      }
+
+      // Check for saved dark mode preference or default to light mode
+      function initDarkMode() {
+        const darkMode = localStorage.getItem('darkMode');
+        const body = document.body;
+        const html = document.documentElement;
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        
+        if (darkMode === 'enabled') {
+          body.classList.add('dark');
+          html.classList.add('dark');
+          if (sunIcon) sunIcon.classList.add('hidden');
+          if (moonIcon) moonIcon.classList.remove('hidden');
+        } else {
+          body.classList.remove('dark');
+          html.classList.remove('dark');
+          if (sunIcon) sunIcon.classList.remove('hidden');
+          if (moonIcon) moonIcon.classList.add('hidden');
+        }
+      }
+
       // --- Initial Page Load ---
       // We start by showing the 'landingPage' by default.
       document.addEventListener('DOMContentLoaded', () => {
+        // Initialize dark mode
+        initDarkMode();
+        
         // We start by showing the 'landingPage' by default.
         landingPage.classList.remove('hidden');
         authPage.classList.add('hidden');
