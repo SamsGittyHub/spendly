@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spendly - Friendly Spending, Make it Spendly</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -14,11 +18,33 @@
               sans: ['Inter', 'sans-serif'],
             },
             colors: {
-              'spendly-green': '#10B981', // A nice green from Tailwind's palette
+              'spendly-green': '#10B981',
+              'spendly-green-dark': '#059669',
               'spendly-blue': '#3B82F6',
+              'spendly-blue-dark': '#2563EB',
               'spendly-dark': '#1F2937',
               'spendly-light': '#F9FAFB',
               'spendly-gray': '#6B7280',
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.6s ease-in-out',
+              'fade-in-up': 'fadeInUp 0.6s ease-out',
+              'slide-in': 'slideIn 0.5s ease-out',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideIn: {
+                '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                '100%': { transform: 'translateX(0)', opacity: '1' },
+              },
             },
           },
         },
@@ -43,6 +69,49 @@
       }
       .app-view.active {
         display: block; /* Shown by JS */
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      /* Enhanced button hover effects */
+      .btn-primary {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateY(0);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+      }
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+      /* Card hover effects */
+      .card-hover {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      /* Gradient backgrounds */
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .gradient-bg-green {
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      }
+      .gradient-bg-blue {
+        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      }
+      /* Glass morphism effect */
+      .glass {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      /* Smooth transitions for all interactive elements */
+      * {
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
       }
     </style>
   </head>
@@ -59,32 +128,33 @@
     <!-- ######################## -->
     <div
       id="authPage"
-      class="hidden min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4"
+      class="hidden min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex flex-col justify-center items-center p-4"
     >
-      <div class="max-w-md w-full">
+      <div class="max-w-md w-full animate-fade-in-up">
         <!-- Logo -->
-        <div class="flex justify-center items-center space-x-2 mb-8">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="36"
-            height="36"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="text-spendly-green"
-          >
-            <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
-            <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
-            <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
-          </svg>
-          <span class="text-3xl font-bold text-spendly-dark">Spendly</span>
+        <div class="flex justify-center items-center space-x-3 mb-10">
+          <div class="bg-gradient-bg-green p-3 rounded-2xl shadow-lg">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+              <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+              <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+            </svg>
+          </div>
+          <span class="text-4xl font-bold bg-gradient-to-r from-spendly-green to-spendly-blue bg-clip-text text-transparent">Spendly</span>
         </div>
 
         <!-- Login Form (Default Visible) -->
-        <div id="loginForm" class="bg-white p-8 rounded-2xl shadow-xl">
+        <div id="loginForm" class="glass p-10 rounded-3xl shadow-2xl border border-gray-100">
           <h2 class="text-2xl font-bold text-center text-spendly-dark mb-6">
             Welcome Back!
           </h2>
@@ -117,7 +187,7 @@
             </div>
             <button
               onclick="login(event)"
-              class="w-full bg-spendly-green text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-spendly-green/90 transition duration-300"
+              class="btn-primary w-full bg-gradient-bg-green text-white py-3.5 rounded-xl font-semibold text-lg shadow-lg"
             >
               Log In
             </button>
@@ -134,7 +204,7 @@
         </div>
 
         <!-- Signup Form (Hidden) -->
-        <div id="signupForm" class="hidden bg-white p-8 rounded-2xl shadow-xl">
+        <div id="signupForm" class="hidden glass p-10 rounded-3xl shadow-2xl border border-gray-100">
           <h2 class="text-2xl font-bold text-center text-spendly-dark mb-6">
             Create Your Account
           </h2>
@@ -180,7 +250,7 @@
             </div>
             <button
               onclick="login(event)"
-              class="w-full bg-spendly-green text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-spendly-green/90 transition duration-300"
+              class="btn-primary w-full bg-gradient-bg-green text-white py-3.5 rounded-xl font-semibold text-lg shadow-lg"
             >
               Create Account
             </button>
@@ -265,8 +335,10 @@
           <div id="view-home" class="app-view active p-6 space-y-6">
             <!-- Balance Card -->
             <div
-              class="bg-gradient-to-br from-spendly-blue to-blue-600 text-white p-6 rounded-2xl shadow-lg"
+              class="bg-gradient-bg-blue text-white p-8 rounded-3xl shadow-2xl relative overflow-hidden"
             >
+              <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+              <div class="relative z-10">
               <div class="flex justify-between items-center mb-2">
                 <span class="text-lg font-medium opacity-80"
                   >Total Balance</span
@@ -332,6 +404,7 @@
                   <span class="font-semibold">$1208.20</span>
                 </div>
               </div>
+              </div>
             </div>
 
             <!-- Statistics (Preview) -->
@@ -343,14 +416,16 @@
                 Statistic
               </h3>
 
-              <div src="/arrow.png" class="bg-white p-4 rounded-xl shadow-sm">
+              <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <!-- Placeholder for chart -->
-
-                <div
-                  src="/arrow.png"
-                  class="h-32 flex items-center justify-center text-gray-400"
-                >
-                  <source />
+                <div class="h-48 flex items-center justify-center text-gray-400 bg-gradient-to-br from-gray-50 to-white rounded-xl">
+                  <div class="text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-2 opacity-50">
+                      <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                      <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                    </svg>
+                    <p class="text-sm">Chart visualization coming soon</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -501,7 +576,7 @@
               <div class="space-y-3">
                 <!-- Transaction Item 1 -->
                 <div
-                  class="bg-white p-4 rounded-xl shadow-sm flex items-center space-x-4"
+                  class="card-hover bg-white p-5 rounded-xl shadow-md border border-gray-100 flex items-center space-x-4"
                 >
                   <div
                     class="w-10 h-10 bg-red-100 text-red-600 rounded-full flex items-center justify-center"
@@ -533,7 +608,7 @@
                 </div>
                 <!-- Transaction Item 2 -->
                 <div
-                  class="bg-white p-4 rounded-xl shadow-sm flex items-center space-x-4"
+                  class="card-hover bg-white p-5 rounded-xl shadow-md border border-gray-100 flex items-center space-x-4"
                 >
                   <div
                     class="w-10 h-10 bg-blue-100 text-spendly-blue rounded-full flex items-center justify-center"
@@ -563,7 +638,7 @@
                 </div>
                 <!-- Transaction Item 3 -->
                 <div
-                  class="bg-white p-4 rounded-xl shadow-sm flex items-center space-x-4"
+                  class="card-hover bg-white p-5 rounded-xl shadow-md border border-gray-100 flex items-center space-x-4"
                 >
                   <div
                     class="w-10 h-10 bg-green-100 text-spendly-green rounded-full flex items-center justify-center"
@@ -769,7 +844,7 @@
               <button
                 type="submit"
                 onclick="event.preventDefault(); showAppView('view-home', document.getElementById('nav-home'));"
-                class="w-full bg-spendly-green text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:bg-spendly-green/90 transition duration-300"
+                class="btn-primary w-full bg-gradient-bg-green text-white py-3.5 rounded-xl font-semibold text-lg shadow-lg"
               >
                 Add Transaction
               </button>
@@ -958,9 +1033,9 @@
     <!-- ######################## -->
     <div id="landingPage" class="hidden">
       <!-- Header & Navigation -->
-      <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+      <header class="glass sticky top-0 z-50 shadow-md border-b border-gray-100">
         <nav
-          class="container mx-auto px-6 py-4 flex justify-between items-center"
+          class="container mx-auto px-6 py-5 flex justify-between items-center"
         >
           <!-- Logo & Brand Name -->
           <a
@@ -1011,7 +1086,7 @@
           <a
             href="javascript:void(0)"
             onclick="showPage('authPage')"
-            class="hidden md:block bg-spendly-green text-white px-5 py-2 rounded-lg font-medium shadow-md hover:bg-spendly-green/90 transition duration-300"
+            class="btn-primary hidden md:block bg-gradient-bg-green text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg"
           >
             Login / Sign Up
           </a>
@@ -1041,36 +1116,39 @@
       <main>
         <!-- Hero Section -->
         <section
-          class="container mx-auto px-6 py-20 md:py-32 flex flex-col md:flex-row items-center"
+          class="container mx-auto px-6 py-24 md:py-40 flex flex-col md:flex-row items-center"
         >
           <!-- Hero Text -->
-          <div class="md:w-1/2 lg:w-3/5 text-center md:text-left mb-12 md:mb-0">
+          <div class="md:w-1/2 lg:w-3/5 text-center md:text-left mb-16 md:mb-0 animate-fade-in-up">
+            <div class="inline-block mb-4 px-4 py-2 bg-spendly-green/10 rounded-full border border-spendly-green/20">
+              <span class="text-sm font-semibold text-spendly-green">✨ New: Enhanced Budget Tracking</span>
+            </div>
             <h1
-              class="text-4xl md:text-5xl lg:text-6xl font-bold text-spendly-dark mb-4 leading-tight"
+              class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-spendly-dark mb-4 leading-tight tracking-tight"
             >
               Friendly spending,
             </h1>
             <h2
-              class="text-4xl md:text-5xl lg:text-6xl font-bold text-spendly-green mb-6 leading-tight"
+              class="text-5xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-spendly-green to-spendly-blue bg-clip-text text-transparent mb-6 leading-tight tracking-tight"
             >
               make it Spendly.
             </h2>
-            <p class="text-lg text-gray-700 mb-8 max-w-lg mx-auto md:mx-0">
+            <p class="text-xl text-gray-600 mb-10 max-w-xl mx-auto md:mx-0 leading-relaxed">
               The simple, smart, and social finance app built for students and
               young adults. Finally take control of your budget, track expenses,
               and reach your savings goals.
             </p>
-            <div class="flex justify-center md:justify-start space-x-4">
+            <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
               <a
                 href="javascript:void(0)"
                 onclick="showPage('authPage')"
-                class="bg-spendly-green text-white px-8 py-3 rounded-lg font-semibold text-lg shadow-lg hover:bg-spendly-green/90 transition duration-300"
+                class="btn-primary bg-gradient-bg-green text-white px-10 py-4 rounded-xl font-bold text-lg shadow-xl text-center"
               >
-                Get Started
+                Get Started Free
               </a>
               <a
                 href="#features"
-                class="bg-gray-200 text-spendly-dark px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-300 transition duration-300"
+                class="bg-white text-spendly-dark px-10 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl border-2 border-gray-200 hover:border-spendly-green/30 transition-all text-center"
               >
                 Learn More
               </a>
@@ -1078,15 +1156,18 @@
           </div>
 
           <!-- Hero Image (App Mockup) -->
-          <div class="md:w-1/2 lg:w-2/5 flex justify-center">
+          <div class="md:w-1/2 lg:w-2/5 flex justify-center animate-fade-in">
             <!-- Using placehold.co to mimic the app screenshot from the PDF -->
-            <img
-              src="./Screenshot 2025-11-03 171339.png"
-              alt="Spendly App Dashboard Mockup"
-              class="rounded-xl shadow-2xl"
-              style="transform: rotate(3deg)"
-              onerror="this.src='https://placehold.co/350x700/E0F2FE/3B82F6?text=App+Preview'"
-            />
+            <div class="relative">
+              <div class="absolute inset-0 bg-gradient-to-r from-spendly-green to-spendly-blue rounded-3xl blur-3xl opacity-20 animate-pulse-slow"></div>
+              <img
+                src="./spendly upscale.jpg"
+                alt="Spendly App Dashboard Mockup"
+                class="relative rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-500"
+                style="transform: rotate(3deg)"
+                onerror="this.src='https://placehold.co/350x700/E0F2FE/3B82F6?text=App+Preview'"
+              />
+            </div>
           </div>
         </section>
 
@@ -1154,19 +1235,19 @@
             </div>
 
             <!-- Features Grid -->
-            <div class="grid md:grid-cols-3 gap-10">
+            <div class="grid md:grid-cols-3 gap-8">
               <!-- Feature 1: Track Income -->
               <div
-                class="bg-spendly-light p-8 rounded-xl shadow-md text-center"
+                class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center"
               >
                 <div
-                  class="bg-spendly-green text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
+                  class="bg-gradient-bg-green text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl transform hover:scale-110 transition-transform"
                 >
                   <!-- Icon: Trending Up -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="32"
-                    height="32"
+                    width="36"
+                    height="36"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -1178,10 +1259,10 @@
                     <polyline points="17 6 23 6 23 12"></polyline>
                   </svg>
                 </div>
-                <h3 class="text-2xl font-semibold text-spendly-dark mb-3">
+                <h3 class="text-2xl font-bold text-spendly-dark mb-4">
                   Track Income & Expenses
                 </h3>
-                <p class="text-gray-700">
+                <p class="text-gray-600 leading-relaxed">
                   Effortlessly track your income and expenses with our
                   easy-to-navigate homescreen. Know where every euro goes.
                 </p>
@@ -1189,16 +1270,16 @@
 
               <!-- Feature 2: Custom Budgets -->
               <div
-                class="bg-spendly-light p-8 rounded-xl shadow-md text-center"
+                class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center"
               >
                 <div
-                  class="bg-spendly-green text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
+                  class="bg-gradient-bg-blue text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl transform hover:scale-110 transition-transform"
                 >
                   <!-- Icon: Target -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="32"
-                    height="32"
+                    width="36"
+                    height="36"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -1211,10 +1292,10 @@
                     <circle cx="12" cy="12" r="2"></circle>
                   </svg>
                 </div>
-                <h3 class="text-2xl font-semibold text-spendly-dark mb-3">
+                <h3 class="text-2xl font-bold text-spendly-dark mb-4">
                   Set Custom Budgets
                 </h3>
-                <p class="text-gray-700">
+                <p class="text-gray-600 leading-relaxed">
                   Setting custom budgets and savings goals has never been so
                   seamless. Plan for rent, books, or a night out.
                 </p>
@@ -1222,16 +1303,16 @@
 
               <!-- Feature 3: Visual Dashboard -->
               <div
-                class="bg-spendly-light p-8 rounded-xl shadow-md text-center"
+                class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center"
               >
                 <div
-                  class="bg-spendly-green text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
+                  class="bg-gradient-to-br from-purple-500 to-pink-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl transform hover:scale-110 transition-transform"
                 >
                   <!-- Icon: Pie Chart -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="32"
-                    height="32"
+                    width="36"
+                    height="36"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -1243,10 +1324,10 @@
                     <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
                   </svg>
                 </div>
-                <h3 class="text-2xl font-semibold text-spendly-dark mb-3">
+                <h3 class="text-2xl font-bold text-spendly-dark mb-4">
                   Visual Dashboard
                 </h3>
-                <p class="text-gray-700">
+                <p class="text-gray-600 leading-relaxed">
                   With our visual dashboard, you can see exactly where your
                   money goes, making your budgeting simple and effective.
                 </p>
@@ -1270,33 +1351,39 @@
             </div>
 
             <!-- Founders Grid -->
-            <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <!-- Founder 1: Silva Hassan -->
-              <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                <img
-                  src="https://placehold.co/100x100/E0F2FE/3B82F6?text=SH"
-                  alt="Silva Hassan"
-                  class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-200"
-                  onerror="this.src='https://placehold.co/100x100/E0F2FE/3B82F6?text=SH'"
-                />
-                <h3 class="text-xl font-semibold text-spendly-dark mb-1">
+              <div class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center">
+                <div class="relative inline-block mb-6">
+                  <div class="absolute inset-0 bg-gradient-to-r from-spendly-green to-spendly-blue rounded-full blur-xl opacity-30"></div>
+                  <img
+                    src="https://placehold.co/120x120/E0F2FE/3B82F6?text=SH"
+                    alt="Silva Hassan"
+                    class="relative w-28 h-28 rounded-full mx-auto border-4 border-white shadow-xl"
+                    onerror="this.src='https://placehold.co/120x120/E0F2FE/3B82F6?text=SH'"
+                  />
+                </div>
+                <h3 class="text-2xl font-bold text-spendly-dark mb-2">
                   Silva Hassan
                 </h3>
-                <p class="text-spendly-blue font-medium">Co-Founder</p>
+                <p class="text-spendly-blue font-semibold text-lg">Co-Founder</p>
               </div>
 
               <!-- Founder 2: Zarah Gilmore -->
-              <div class="bg-white p-8 rounded-xl shadow-md text-center">
-                <img
-                  src="https://placehold.co/100x100/E0F2FE/3B82F6?text=ZG"
-                  alt="Zarah Gilmore"
-                  class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-200"
-                  onerror="this.src='https://placehold.co/100x100/E0F2FE/3B82F6?text=ZG'"
-                />
-                <h3 class="text-xl font-semibold text-spendly-dark mb-1">
+              <div class="card-hover bg-white p-10 rounded-2xl shadow-lg border border-gray-100 text-center">
+                <div class="relative inline-block mb-6">
+                  <div class="absolute inset-0 bg-gradient-to-r from-spendly-blue to-purple-500 rounded-full blur-xl opacity-30"></div>
+                  <img
+                    src="https://placehold.co/120x120/E0F2FE/3B82F6?text=ZG"
+                    alt="Zarah Gilmore"
+                    class="relative w-28 h-28 rounded-full mx-auto border-4 border-white shadow-xl"
+                    onerror="this.src='https://placehold.co/120x120/E0F2FE/3B82F6?text=ZG'"
+                  />
+                </div>
+                <h3 class="text-2xl font-bold text-spendly-dark mb-2">
                   Zarah Gilmore
                 </h3>
-                <p class="text-spendly-blue font-medium">Co-Founder</p>
+                <p class="text-spendly-blue font-semibold text-lg">Co-Founder</p>
               </div>
             </div>
           </div>
